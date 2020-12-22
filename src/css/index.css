@@ -1,0 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+*:focus {
+  outline: none;
+}
+body {
+  font-family: "Helvetica Neue";
+  font-weight: 300;
+  background: #f5f5f5;
+}
+
+.App {
+  width: 100%;
+  max-width: 980px;
+  margin: 20px auto 0 auto;
+}
+
+a,
+a:visited,
+a:hover {
+  text-decoration: none;
+}
+
+/*Overwrite slider default styles*/
+.image-gallery-image {
+  width: 300px;
+  height: 300px;
+}
+.image-gallery-slide .image-gallery-image {
+  object-fit: none !important;
+}
+.image-gallery-left-nav .image-gallery-svg,
+.image-gallery-right-nav .image-gallery-svg {
+  width: 40px !important;
+  height: 70px !important;
+}
