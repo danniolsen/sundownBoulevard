@@ -5,11 +5,13 @@ import fetchData from "../api/fetchData";
 import OrderFlow from "../components/OrderFlow";
 import { connect } from "react-redux";
 import Drink from "../components/Drink";
+import { useHistory } from "react-router-dom";
 
-const PickDrinks = (props) => {
+const DrinksView = (props) => {
   const style = useStyles();
   const { order, drinksDis } = props;
   const [drinks, setDrinks] = useState([]);
+  const history = useHistory();
 
   const fetchDrinks = async () => {
     const result = await fetchData("https://api.punkapi.com/v2/beers");
@@ -41,6 +43,10 @@ const PickDrinks = (props) => {
     return handleDrink;
   };
 
+  const goToOrder = () => {
+    history.push("/order");
+  };
+
   return (
     <Grid container>
       <Grid item sm={12} md={8}>
@@ -63,7 +69,7 @@ const PickDrinks = (props) => {
         </Grid>
       </Grid>
       <Grid item sm={12} md={4}>
-        <OrderFlow action={() => console.log("go now")} />
+        <OrderFlow action={() => goToOrder()} />
       </Grid>
     </Grid>
   );
@@ -76,7 +82,7 @@ const mapDispatchToProps = (dispatch) => ({
   drinksDis: (payload) => dispatch({ type: "SET_DISH", payload: payload }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PickDrinks);
+export default connect(mapStateToProps, mapDispatchToProps)(DrinksView);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -85,12 +91,12 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 25,
   },
   drinkCon: {
-    padding: 5,
+    padding: "0px 5px 10px 5px",
   },
 }));
 
 /*
 import PropTypes from "prop-types";
-PickDrinks.defaultProps = {};
-PickDrinks.propTypes = {};
+DrinksView.defaultProps = {};
+DrinksView.propTypes = {};
 */

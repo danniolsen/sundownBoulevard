@@ -3,6 +3,7 @@ import React from "react";
 import { makeStyles, Grid } from "@material-ui/core/";
 import PropTypes from "prop-types";
 import Paragraph from "./Paragraph";
+import { White } from "../components/Colors";
 import SundownButton from "./SundownButton";
 import { connect } from "react-redux";
 
@@ -25,7 +26,7 @@ const OrderFlow = (props) => {
 
           {drinks.map((drink) => {
             return (
-              <Paragraph size={13} key={drink.id}>
+              <Paragraph size={15} key={drink.id}>
                 - {drink.name}
               </Paragraph>
             );
@@ -49,16 +50,17 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, null)(OrderFlow);
 
 const useStyles = makeStyles((theme) => ({
-  root: { padding: 10 },
+  root: { padding: 10, background: White },
   buttonCon: {
     width: "100%",
     flexDirection: "column",
-    height: 220,
+    maxHeight: 220,
     padding: 20,
   },
   orderListCon: {
     minHeight: 200,
   },
+  drinks: { paddingBottom: 10 },
 }));
 
 OrderFlow.defaultProps = {

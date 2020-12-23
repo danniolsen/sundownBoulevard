@@ -9,11 +9,11 @@ import OrderFlow from "../components/OrderFlow";
 import SundownButton from "../components/SundownButton";
 import { useHistory } from "react-router-dom";
 
-function PickDish(props) {
+function DishView(props) {
   const style = useStyles();
   const history = useHistory();
   const [loading, setLoading] = useState(true);
-  const { order, setDish, drinks } = props;
+  const { order, setDish } = props;
 
   const getRandomDish = async () => {
     let orderCopy = { ...order };
@@ -31,16 +31,17 @@ function PickDish(props) {
   };
 
   useEffect(() => {
-    if (!order.orderDone) {
+    if (!order.orderDone && order.dish.strMeal === "") {
       getRandomDish();
     }
+    setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const goToNext = () => {
     history.push("/drinks");
   };
-  console.log(drinks);
+
   return (
     <Grid container>
       <Grid item xs={12} sm={8}>
@@ -83,14 +84,13 @@ function PickDish(props) {
 
 const mapStateToProps = (state) => ({
   order: state.order.order,
-  drinks: state.order,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setDish: (payload) => dispatch({ type: "SET_DISH", payload: payload }),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PickDish);
+export default connect(mapStateToProps, mapDispatchToProps)(DishView);
 
 const useStyles = makeStyles((theme) => ({
   root: { background: "#CCC" },
@@ -98,5 +98,5 @@ const useStyles = makeStyles((theme) => ({
   dishInfo: { padding: 15 },
 }));
 
-//PickDish.defaultProps = {};
-//PickDish.propTypes = {};
+//DishView.defaultProps = {};
+//DishView.propTypes = {};

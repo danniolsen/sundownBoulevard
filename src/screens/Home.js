@@ -1,4 +1,5 @@
 "use-strict";
+import { useEffect } from "react";
 import { makeStyles, Grid } from "@material-ui/core/";
 import OrderFlow from "../components/OrderFlow";
 import { White } from "../components/Colors";
@@ -12,11 +13,15 @@ import { connect } from "react-redux";
 function Home(props) {
   const style = useStyles();
   const history = useHistory();
-  const { images } = props;
+  const { images, orderDis } = props;
 
   const goToDish = () => {
     history.push("/dishes");
   };
+
+  useEffect(() => {
+    orderDis();
+  }, [orderDis]);
 
   return (
     <Grid container>
@@ -54,7 +59,10 @@ const mapStateToProps = (state) => ({
   images: state.images.images,
 });
 
-export default connect(mapStateToProps, null)(Home);
+const mapDispatchToProps = (dispatch) => ({
+  orderDis: (payload) => dispatch({ type: "CLEAR_ORDER" }),
+});
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
 
 const useStyles = makeStyles((theme) => ({
   row: { flexGrow: 1 },
