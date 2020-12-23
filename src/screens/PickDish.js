@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 //import PropTypes from "prop-types";
 import { makeStyles, Grid } from "@material-ui/core/";
 import { connect } from "react-redux";
-import fetchDish from "../api/fetchDish";
+import fetchData from "../api/fetchData";
 import Paragraph from "../components/Paragraph";
 import OrderFlow from "../components/OrderFlow";
 import SundownButton from "../components/SundownButton";
@@ -17,7 +17,9 @@ function PickDish(props) {
 
   const getRandomDish = async () => {
     let orderCopy = { ...order };
-    const dish = await fetchDish();
+    const dish = await fetchData(
+      "https://www.themealdb.com/api/json/v1/1/random.php"
+    );
 
     orderCopy.dish.idMeal = dish.meals[0].idMeal;
     orderCopy.dish.strMeal = dish.meals[0].strMeal;
@@ -58,9 +60,11 @@ function PickDish(props) {
       </Grid>
 
       <Grid item xs={12} sm={8} className={style.dishInfo}>
-        <Paragraph bold size={20}>
-          {!loading && order.dish.strMeal}
-        </Paragraph>
+        {!loading && (
+          <Paragraph bold size={20}>
+            {order.dish.strMeal}
+          </Paragraph>
+        )}
 
         <Paragraph>Add ingerdiences</Paragraph>
       </Grid>
