@@ -1,15 +1,16 @@
-import { SET_DISH } from "../actions/actionTypes";
+import { SET_DISH, CLEAR_ORDER } from "../actions/actionTypes";
 
 const initialState = {
   order: {
-    email: "dan",
-    orderExist: false,
+    email: "",
+    orderDone: false,
     dish: {
       idMeal: "",
       strMeal: "",
       strCategory: "",
       strMealThumb: "",
     },
+    drinks: [],
   },
 };
 
@@ -18,12 +19,11 @@ const orderReducer = (state = initialState, action) => {
     case SET_DISH: {
       return {
         ...state,
-        order: {
-          email: action.payload.email,
-          orderExist: action.payload.orderExist,
-          dish: action.payload.dish,
-        },
+        order: action.payload,
       };
+    }
+    case CLEAR_ORDER: {
+      return state;
     }
     default:
       return state;

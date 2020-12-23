@@ -4,12 +4,15 @@ import { makeStyles } from "@material-ui/core/";
 import { useHistory } from "react-router-dom";
 import Logo from "../assets/beach.svg";
 import Paragraph from "./Paragraph";
+import { connect } from "react-redux";
 
 function Header(props) {
   const style = useStyles();
   const history = useHistory();
+  const { orderDis } = props;
 
   const goHome = () => {
+    orderDis();
     history.replace("/");
   };
 
@@ -45,7 +48,11 @@ function Header(props) {
   );
 }
 
-export default Header;
+const mapDispatchToProps = (dispatch) => ({
+  orderDis: (payload) => dispatch({ type: "CLEAR_ORDER" }),
+});
+
+export default connect(null, mapDispatchToProps)(Header);
 
 const useStyles = makeStyles((theme) => ({
   navBar: {

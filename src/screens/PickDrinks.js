@@ -3,14 +3,13 @@ import React, { useEffect, useState } from "react";
 import { makeStyles, Grid } from "@material-ui/core/";
 import fetchData from "../api/fetchData";
 import OrderFlow from "../components/OrderFlow";
-import { White, Primary } from "../components/Colors";
-import Paragraph from "../components/Paragraph";
-import Check from "../assets/check.svg";
+import { connect } from "react-redux";
+import Drink from "../components/Drink";
 
 const PickDrinks = (props) => {
   const style = useStyles();
+  const { order, drinksDis } = props;
   const [drinks, setDrinks] = useState([]);
-  const [pickedDrinks, setPickedDrinks] = useState([]);
 
   const fetchDrinks = async () => {
     const result = await fetchData("https://api.punkapi.com/v2/beers");
@@ -21,8 +20,8 @@ const PickDrinks = (props) => {
     fetchDrinks();
   }, []);
 
-  const handleDrink = (drink) => {
-    let pickedDrinksCopy = [...pickedDrinks];
+  const handleDrinks = (drink) => {
+    let orderCopy = { ...order };
 
     let newDrink = {
       id: drink.id,
@@ -30,23 +29,16 @@ const PickDrinks = (props) => {
       image: drink.image_url,
     };
 
-    const index = pickedDrinksCopy.findIndex(
+    const index = orderCopy.drinks.findIndex(
       (drinkItem) => drinkItem.id === newDrink.id
     );
+
     let handleDrink =
       index === -1
-        ? pickedDrinksCopy.push(newDrink)
-        : pickedDrinksCopy.splice(index, 1);
-    setPickedDrinks(pickedDrinksCopy);
+        ? orderCopy.drinks.push(newDrink)
+        : orderCopy.drinks.splice(index, 1);
+    drinksDis(orderCopy);
     return handleDrink;
-  };
-
-  const isSelected = (drink, pickedDrinks) => {
-    const result = pickedDrinks.find(({ id }) => id === drink.id);
-    if (result) {
-      return { border: "1px solid #F00" };
-    }
-    return null;
   };
 
   return (
@@ -61,36 +53,10 @@ const PickDrinks = (props) => {
                 md={6}
                 item
                 key={drink.id}
-                onClick={() => handleDrink(drink)}
+                onClick={() => handleDrinks(drink)}
                 className={style.drinkCon}
               >
-                <div className={style.drink}>
-                  {isSelected(drink, pickedDrinks) && (
-                    <div className={style.checked}>
-                      <img
-                        className={style.checkMark}
-                        src={Check}
-                        alt="check mark"
-                      />
-                    </div>
-                  )}
-                  <div className={style.drinkImgCon}>
-                    <img
-                      className={style.drinkImg}
-                      src={drink.image_url}
-                      alt={drink.name}
-                    />
-                  </div>
-                  <div className={style.drinkName}>
-                    <Paragraph size={18}>
-                      {drink.name.substring(0, 26)}
-                    </Paragraph>
-                  </div>
-
-                  <div className={style.drinkAlc}>
-                    <Paragraph>{`Alc ${drink.abv} %`}</Paragraph>
-                  </div>
-                </div>
+                <Drink order={order} drink={drink} />
               </Grid>
             );
           })}
@@ -103,7 +69,14 @@ const PickDrinks = (props) => {
   );
 };
 
-export default PickDrinks;
+const mapStateToProps = (state) => ({
+  order: state.order.order,
+});
+const mapDispatchToProps = (dispatch) => ({
+  drinksDis: (payload) => dispatch({ type: "SET_DISH", payload: payload }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PickDrinks);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -113,55 +86,6 @@ const useStyles = makeStyles((theme) => ({
   },
   drinkCon: {
     padding: 5,
-  },
-  drink: {
-    width: "100%",
-    paddingTop: "100%",
-    position: "relative",
-    background: White,
-    cursor: "pointer",
-    border: "1px solid #FFF",
-    "&:hover": {
-      border: `1px solid ${Primary}`,
-    },
-  },
-  drinkImgCon: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    paddingTop: "10%",
-    width: "100%",
-    textAlign: "center",
-    marginLeft: "auto",
-    marginRight: "auto",
-  },
-  drinkImg: { height: 240 },
-  drinkName: {
-    position: "absolute",
-    bottom: 15,
-    left: 15,
-    zIndex: 1000,
-  },
-  drinkAlc: {
-    position: "absolute",
-    bottom: 15,
-    right: 15,
-    zIndex: 1000,
-  },
-  checked: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    zIndex: 2000,
-    textAlign: "center",
-    background: "rgba(255,255,255, 0.5)",
-  },
-  checkMark: {
-    width: "20%",
-    margin: "30% auto",
-    display: "block",
   },
 }));
 
