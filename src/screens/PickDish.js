@@ -13,7 +13,7 @@ function PickDish(props) {
   const style = useStyles();
   const history = useHistory();
   const [loading, setLoading] = useState(true);
-  const { order, setDish } = props;
+  const { order, setDish, drinks } = props;
 
   const getRandomDish = async () => {
     let orderCopy = { ...order };
@@ -25,12 +25,13 @@ function PickDish(props) {
     orderCopy.dish.strMeal = dish.meals[0].strMeal;
     orderCopy.dish.strCategory = dish.meals[0].strCategory;
     orderCopy.dish.strMealThumb = dish.meals[0].strMealThumb;
+
     setDish(orderCopy);
     setLoading(false);
   };
 
   useEffect(() => {
-    if (!order.orderExist) {
+    if (!order.orderDone) {
       getRandomDish();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -39,7 +40,7 @@ function PickDish(props) {
   const goToNext = () => {
     history.push("/drinks");
   };
-
+  console.log(drinks);
   return (
     <Grid container>
       <Grid item xs={12} sm={8}>
@@ -82,6 +83,7 @@ function PickDish(props) {
 
 const mapStateToProps = (state) => ({
   order: state.order.order,
+  drinks: state.order,
 });
 
 const mapDispatchToProps = (dispatch) => ({

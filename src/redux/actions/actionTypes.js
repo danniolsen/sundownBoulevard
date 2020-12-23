@@ -1,8 +1,5 @@
 const SET_DISH = "SET_DISH";
+const SET_DRINKS = "SET_DRINKS";
+const CLEAR_ORDER = "CLEAR_ORDER";
 
-const setDish = (payload) => ({
-  type: SET_DISH,
-  payload: payload,
-});
-
-export { SET_DISH, setDish };
+export { SET_DISH, SET_DRINKS, CLEAR_ORDER };

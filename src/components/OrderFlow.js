@@ -4,10 +4,12 @@ import { makeStyles, Grid } from "@material-ui/core/";
 import PropTypes from "prop-types";
 import Paragraph from "./Paragraph";
 import SundownButton from "./SundownButton";
+import { connect } from "react-redux";
 
 const OrderFlow = (props) => {
   const style = useStyles();
-  const { title, additionalText, btnLabel, action } = props;
+  const { title, btnLabel, action } = props;
+  const { dish, drinks } = props.order;
 
   const goToView = () => {
     action();
@@ -18,7 +20,17 @@ const OrderFlow = (props) => {
       <Paragraph bold>{title}</Paragraph>
 
       <div className={style.buttonCon}>
-        <Paragraph>{additionalText}</Paragraph>
+        <div className={style.orderListCon}>
+          <Paragraph>{dish.strMeal}</Paragraph>
+
+          {drinks.map((drink) => {
+            return (
+              <Paragraph size={13} key={drink.id}>
+                - {drink.name}
+              </Paragraph>
+            );
+          })}
+        </div>
         <SundownButton
           label={btnLabel}
           primary
@@ -30,28 +42,31 @@ const OrderFlow = (props) => {
   );
 };
 
-export default OrderFlow;
+const mapStateToProps = (state) => ({
+  order: state.order.order,
+});
+
+export default connect(mapStateToProps, null)(OrderFlow);
 
 const useStyles = makeStyles((theme) => ({
   root: { padding: 10 },
   buttonCon: {
     width: "100%",
-    display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
     height: 220,
     padding: 20,
+  },
+  orderListCon: {
+    minHeight: 200,
   },
 }));
 
 OrderFlow.defaultProps = {
   title: "Order flow",
-  additionalText: "",
   btnLabel: "NEXT",
 };
 
 OrderFlow.propTypes = {
   title: PropTypes.string,
-  additionalText: PropTypes.string,
   btnlabel: PropTypes.string,
 };
