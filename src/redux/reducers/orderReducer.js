@@ -1,6 +1,6 @@
 import { SET_DISH, CLEAR_ORDER } from "../actions/actionTypes";
 
-const initialState = {
+export const initialState = {
   order: {
     email: "",
     orderDone: false,
@@ -23,7 +23,19 @@ const orderReducer = (state = initialState, action) => {
       };
     }
     case CLEAR_ORDER: {
-      return state;
+      return {
+        order: {
+          email: "",
+          orderDone: false,
+          dish: {
+            idMeal: "",
+            strMeal: "",
+            strCategory: "",
+            strMealThumb: "",
+          },
+          drinks: [],
+        },
+      };
     }
     default:
       return state;

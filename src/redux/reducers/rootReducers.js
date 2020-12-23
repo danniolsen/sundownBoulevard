@@ -9,7 +9,7 @@ import allOrdersReducer from "./allOrdersReducer.js";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["allOrders"],
+  whitelist: ["order"],
 };
 
 const rootReducer = combineReducers({

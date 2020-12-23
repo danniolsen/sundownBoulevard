@@ -29,7 +29,6 @@ Paragraph.defaultProps = {
   size: 16,
 };
 Paragraph.propTypes = {
-  children: PropTypes.string,
   secondary: PropTypes.bool,
   bold: PropTypes.bool,
   uppercase: PropTypes.bool,

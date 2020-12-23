@@ -1,5 +1,6 @@
 import Home from "./Home";
-import PickDish from "./PickDish";
-import PickDrinks from "./PickDrinks";
+import DishView from "./DishView";
+import DrinksView from "./DrinksView";
+import OrderView from "./OrderView";
 
-export { Home, PickDish, PickDrinks };
+export { Home, DishView, DrinksView, OrderView };
