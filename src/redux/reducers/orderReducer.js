@@ -3,9 +3,8 @@ import { SET_DISH, CLEAR_ORDER } from "../actions/actionTypes";
 export const initialState = {
   order: {
     email: "",
-    orderDone: false,
-    date: "",
-    time: "",
+    date: new Date(),
+    time: "12:00",
     guests: 1,
     dish: {
       idMeal: "",
@@ -29,9 +28,8 @@ const orderReducer = (state = initialState, action) => {
       return {
         order: {
           email: "",
-          orderDone: false,
-          date: "",
-          time: "",
+          date: new Date(),
+          time: "12:00",
           guests: 1,
           dish: {
             idMeal: "",

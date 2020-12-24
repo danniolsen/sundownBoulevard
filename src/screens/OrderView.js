@@ -11,7 +11,7 @@ import { useHistory } from "react-router-dom";
 function OrderView(props) {
   const style = useStyles();
   const history = useHistory();
-  const { order, orderDis } = props;
+  const { order, orderDis, allOrders, allOrderDis } = props;
 
   const selectDate = (event) => {
     let orderCopy = { ...order };
@@ -35,17 +35,19 @@ function OrderView(props) {
 
   const enterEmail = (email) => {
     let orderCopy = { ...order };
-
-    const regex = /^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,2}$/;
-    if (regex.test(email.target.value)) {
-      console.log("good");
-      orderCopy.email = email.target.value;
-      orderDis(orderCopy);
-    }
+    orderCopy.email = email.target.value;
+    orderDis(orderCopy);
   };
 
-  const goToReceipt = () => {
-    history.push("/repeipt");
+  const createOrder = () => {
+    let allOrdersCopy = { ...allOrders };
+
+    const regex = /^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,2}$/;
+    if (regex.test(order.email)) {
+      allOrdersCopy.orderlist.push(order);
+      allOrderDis(allOrdersCopy);
+      history.push("/receipt");
+    }
   };
 
   return (
@@ -100,7 +102,7 @@ function OrderView(props) {
         </Grid>
 
         <SundownButton
-          action={() => goToReceipt()}
+          action={() => createOrder()}
           label="ORDER"
           position="right"
         />
@@ -110,11 +112,14 @@ function OrderView(props) {
 }
 
 const mapStateToProps = (state) => ({
+  allOrders: state.allOrders,
   order: state.order.order,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   orderDis: (payload) => dispatch({ type: "SET_DISH", payload: payload }),
+  allOrderDis: (payload) =>
+    dispatch({ type: "SET_ALL_ORDERS", payload: payload }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderView);
