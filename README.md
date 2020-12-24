@@ -4,7 +4,7 @@
 
 `$ yarn`
 
-###
+### Run
 
 `$ yarn start`
 
