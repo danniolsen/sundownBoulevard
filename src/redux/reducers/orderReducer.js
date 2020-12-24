@@ -4,6 +4,9 @@ export const initialState = {
   order: {
     email: "",
     orderDone: false,
+    date: "",
+    time: "",
+    guests: 1,
     dish: {
       idMeal: "",
       strMeal: "",
@@ -27,6 +30,9 @@ const orderReducer = (state = initialState, action) => {
         order: {
           email: "",
           orderDone: false,
+          date: "",
+          time: "",
+          guests: 1,
           dish: {
             idMeal: "",
             strMeal: "",
